@@ -5,7 +5,7 @@ from tqdm import tqdm
 import db as db
 import gitworker as gitworker
 import conf as conf
-
+import redditworker as redditworker
 
 def get_reddit():
     return praw.Reddit(user_agent=conf.config["reddit"]["user_agent"],
@@ -41,9 +41,10 @@ def handle_callout(submission, comment):
         print("already exists in db")
     else:
         print("does not exist yet, creating an in-progress record")
-        gitworker.commit_submission(submission)
         db.create_record(submission, "in-progress")
-
+        created_submission = gitworker.commit_submission(submission)
+        db.update_record(submission, "pull-requested")
+        redditworker.reply_created_pr(comment, created_submission)
 
 def create_directory(name):
     try:

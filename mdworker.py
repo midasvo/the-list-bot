@@ -50,6 +50,5 @@ def summarize(text):
     auto_abstractor.delimiter_list = [".", "\n"]
     abstractable_doc = TopNRankAbstractor()
     result_dict = auto_abstractor.summarize(str(text), abstractable_doc)
-    concat = ""
     for sentence in result_dict["summarize_result"]:
         return sentence
