@@ -1,6 +1,4 @@
-db/*
 venv
-work/*
 config.yaml
 init
 out.txt
