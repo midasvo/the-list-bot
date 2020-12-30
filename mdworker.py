@@ -5,6 +5,7 @@ from pysummarization.nlpbase.auto_abstractor import AutoAbstractor
 from pysummarization.tokenizabledoc.simple_tokenizer import SimpleTokenizer
 import conf
 from slugify import slugify
+from datetime import datetime
 
 submission_archetype = conf.config["submission"]["archetype_location"]
 work_dir = conf.config["git"]["working_dir"]
@@ -17,8 +18,8 @@ def create(submission):
     file_location = items_dir + "/" + file_tile + ".md"
     replaces = {
         "!!TITLE_REPLACE!!": str(submission.title),
-        "!!DATE_REPLACE!!": str(submission.created_utc),
-        "!!ITEMURL_SOCCER_REPLACE!!": str(submission.permalink),
+        "!!DATE_REPLACE!!": str(datetime.utcfromtimestamp(submission.created_utc)),
+        "!!ITEMURL_SOCCER_REPLACE!!": str("https://old.reddit.com" + submission.permalink),
         "!!ITEMURL_REPLACE!!": str(submission.url)
 
     }
