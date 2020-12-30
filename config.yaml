@@ -1,0 +1,17 @@
+db:
+  sqlite_location: "db/list.db"
+git:
+    working_dir: "work"
+    repository: "midasvo/the-list.git"
+    username: "username"
+    password: "git-access-token"
+submission:
+    archetype_location: "archetype/submission_archetype.md"
+reddit:
+  sub: "soccer"
+  user_agent: "Terry the-list"
+  username: "reddit-username"
+  password: "reddit-password"
+  client_id: "reddit_script_client_id"
+  client_secret: "redditscriptclient-secret"
+callouts: ["addittothelist", "aittl", "AITTL"]
