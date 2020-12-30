@@ -1,6 +1,7 @@
 db/*
 venv
 work/*
+config.yaml
 init
 out.txt
 __pycache__
