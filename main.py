@@ -1,3 +1,5 @@
+import os
+
 import praw
 from tqdm import tqdm
 import db as db
@@ -43,12 +45,24 @@ def handle_callout(submission, comment):
         db.create_record(submission, "in-progress")
 
 
+def create_directory(name):
+    try:
+        os.mkdir(name)
+    except OSError:
+        print("Creation of the directory %s failed" % name)
+    else:
+        print("Successfully created the directory %s " % name)
+
+
 if __name__ == '__main__':
     try:
         file = open("init", 'r')
     except IOError:
         file = open("init", 'w')
+        create_directory("db")  # sqlite file lives here
+        create_directory("work")  # the-list repository lives here
         db.create_db()
+
     gitworker.init()
 
     read_comments_stream()

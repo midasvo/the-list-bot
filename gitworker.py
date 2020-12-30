@@ -42,25 +42,15 @@ def do_pull_request():
 
 def commit_submission(submission):
     print("Making a commit for submission")
-
-    # markdowner.create_markdown_file(submission)
-    # transform submission title into a branch-name
     created_file = mdworker.create(submission)
-    # new-submission: submission-title - automatically created by the list bot (huckleberry)
-    repo = Repo(git_working_dir)
-    repo.create_head("new_post_" + created_file["file_title"])
-    repo.index.add(created_file["file_location_absolute"])
-    repo.index.commit(
-        "Automatically created from the-list-bot, added a new post with a slug of " + created_file["file_title"])
-
-    for commit in list(repo.iter_commits()):
-        print('COMMITS--->', commit.stats.files)
-
-    origin = repo.remote(name="origin")
-    origin.push()
-    # create new branch
-    # create markdown file
-    # add changes
-    # do commit
-    # create pull request
-    # return true
+    # repo = Repo(git_working_dir)
+    # repo.create_head("new_post_" + created_file["file_title"])
+    # repo.index.add(created_file["file_location_absolute"])
+    # repo.index.commit(
+    #     "Automatically created from the-list-bot, added a new post with a slug of " + created_file["file_title"])
+    #
+    # for commit in list(repo.iter_commits()):
+    #     print('COMMITS--->', commit.stats.files)
+    #
+    # origin = repo.remote(name="origin")
+    # origin.push()
