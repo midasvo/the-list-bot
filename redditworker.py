@@ -2,5 +2,9 @@
 def reply_created_pr(comment, created_submission):
     print("Replying to a comment")
     print(comment)
-    comment.reply("Hey you son of a bitch I just created a PR for you :) " + created_submission['pr_url'])
-    print(created_submission)
+    with open('archetype/reply_created_pr') as f:
+        s = f.read()
+        print(s)
+    s = s.replace("!!PR_URL!!", created_submission['pr_url'])
+    print(s)
+    comment.reply(s)
