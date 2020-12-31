@@ -2,7 +2,7 @@ db:
   sqlite_location: "db/list.db"
 git:
     working_dir: "work"
-    repository: "midasvo/the-list.git"
+    repository: "midasvo/the-list"
     username: "username"
     password: "git-access-token"
 submission:
