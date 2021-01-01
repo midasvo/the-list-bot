@@ -6,6 +6,8 @@ You can run it yourself by filling in your credentials in the config.yaml file a
 
 ## Major todos:
 
+- Run the bot in a docker container
+
 - Add better recognition of callouts
 
 - Ability to watch comments to see if they meet the threshold of being added
