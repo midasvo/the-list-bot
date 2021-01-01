@@ -1,27 +1,12 @@
 import os
-
 import praw
 from tqdm import tqdm
-import db as db
 import gitworker as gitworker
-import conf as conf
 import redditworker as redditworker
-
-def get_reddit():
-    return praw.Reddit(user_agent=conf.config["reddit"]["user_agent"],
-                       client_id=conf.config["reddit"]["client_id"],
-                       client_secret=conf.config["reddit"]["client_secret"],
-                       username=conf.config["reddit"]["username"],
-                       password=conf.config["reddit"]["password"])
+import db as db
 
 
-def read_comments_stream():
-    subreddit = conf.config['reddit']['sub']
-    print(f'Getting the comments stream of /r/{subreddit} \n')
-    print("------------------------------------------")
-    reddit = get_reddit()
-    sub = reddit.subreddit(subreddit)
-    find_callouts(sub.stream.submissions())
+
 
 
 def find_callouts(submissions):
@@ -43,8 +28,12 @@ def handle_callout(submission, comment):
         print("does not exist yet, creating an in-progress record")
         db.create_record(submission, "in-progress")
         created_submission = gitworker.commit_submission(submission)
-        db.update_record(submission, "pull-requested")
-        redditworker.reply_created_pr(comment, created_submission)
+        if created_submission['status'] == 201:
+            db.update_record(submission, "pull-requested")
+            redditworker.reply_created_pr(comment, created_submission)
+        else:
+            db.update_record(submission, "already-exists")
+
 
 def create_directory(name):
     try:
@@ -66,11 +55,4 @@ if __name__ == '__main__':
 
     gitworker.init()
 
-    read_comments_stream()
-    # get top-level comments that call out bot -> done
-    # retrieve the submission and specific comment -> done
-    # check if submission is not already in file/sqlite
-    # add the submission tag to a file/sqlite db with a status, e.g. in-progress
-    # create a markdown post based on the submission
-    # create a PR with the markdown post
-    # reply to the comment saying whats what and link the PR
+    redditworker.loop_comments_stream(find_callouts)

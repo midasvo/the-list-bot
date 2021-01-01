@@ -49,14 +49,12 @@ def create_pull_request(branch_name, file_title):
     body = json.dumps({'title': title, 'head': branch_name, 'base': 'main'})
     r = requests.post(url, headers=headers, data=body)
     print(r.status_code, r.reason)
-    if r.status_code == 201:
-        return_obj = {
-            'url': json.loads(r.text)['html_url']
-        }
-        return return_obj
-        print("Successfully created the PR, found at " + json.loads(r.text)['html_url'])
-    else:
-        print("Encountered an error while creating the PR... " + r.reason)
+    return_obj = {
+        'status': r.status_code,
+        'reason': r.reason,
+        'url': json.loads(r.text)['html_url']
+    }
+    return return_obj
 
 
 def commit_submission(submission):
@@ -79,6 +77,7 @@ def commit_submission(submission):
     pr = create_pull_request(branch_name, created_file['file_title'])
     return_obj = {
         'pr_url': pr['url'],
-        'branch': branch_name
+        'branch': branch_name,
+        'status': pr['status']
     }
     return return_obj
