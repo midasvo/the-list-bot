@@ -49,12 +49,36 @@ def create_pull_request(branch_name, file_title):
     body = json.dumps({'title': title, 'head': branch_name, 'base': 'main'})
     r = requests.post(url, headers=headers, data=body)
     print(r.status_code, r.reason)
+    response_json = json.loads(r.text)
+    if 'html_url' in response_json:
+        url = response_json['html_url']
+    else:
+        url = ""
+
+    if 'number' in response_json:
+        number = response_json['number']
+    else:
+        number = ""
     return_obj = {
         'status': r.status_code,
         'reason': r.reason,
-        'url': json.loads(r.text)['html_url']
+        'url': url,
+        'number': number
     }
     return return_obj
+
+
+def accept_pull_request(pr_number):
+    print("Accepting pull request for " + pr_number)
+    token = "token " + git_password
+    headers = {'Authorization': token}
+    url = "https://api.github.com/repos/" + git_repository + "/pulls/" + pr_number + "/merge"
+    commit_title = "ListBot Automatically merged PR"
+    body = json.dumps({'commit_title': commit_title})
+    r = requests.put(url, headers=headers, data=body)
+    print(r.status_code, r.reason)
+    response_json = json.loads(r.text)
+    return r.status_code
 
 
 def commit_submission(submission):
@@ -77,6 +101,7 @@ def commit_submission(submission):
     pr = create_pull_request(branch_name, created_file['file_title'])
     return_obj = {
         'pr_url': pr['url'],
+        'pr_id': pr['number'],
         'branch': branch_name,
         'status': pr['status']
     }
