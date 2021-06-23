@@ -6,7 +6,9 @@ You can run it yourself by filling in your credentials in the config.yaml file a
 
 ## Major todos:
 
-- Run the bot in a docker container
+- Add logging, should be able to cat a file and see what the bot has done
+
+- Add database logging instead of in a text file
 
 - Add better recognition of callouts
 
