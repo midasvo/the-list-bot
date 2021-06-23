@@ -17,8 +17,6 @@ def check_on_prs():
     threading.Timer(next_call - time.time(), check_on_prs).start()
 
 
-
-
 def find_callouts(submissions):
     for submission in tqdm(submissions):
         submission.comments.replace_more(limit=0)
